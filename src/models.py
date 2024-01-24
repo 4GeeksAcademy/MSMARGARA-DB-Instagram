@@ -4,7 +4,6 @@ from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Boolean, E
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
-
 Base = declarative_base()
 
 class User(Base):
@@ -22,7 +21,7 @@ class User(Base):
     gender_id = Column(Integer, ForeignKey('gender.id'), nullable= True)
     account_status = Column(Boolean, nullable= False)
     link = Column(String(250), nullable=True)
-    account_type = Column(Integer, nullable=False)
+    account_type = Column(Integer, ForeignKey('account_type.id'), nullable=False)
     avatar = Column(String(250), nullable=True)
 
 class Gender(Base):
@@ -30,12 +29,22 @@ class Gender(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(20), nullable=False)
 
+class AccountType(Base):
+    __tablename__='account_type'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(50), nullable=False)
+    
+class AcceptanceStatus(Enum):
+    ACEPTADO = "aceptado"
+    RECHAZADO = "rechazado"
+    PENDIENTE = "pendiente"
+
 class Followers(Base):
-    __tablename__= 'followers'
+    __tablename__ = 'followers'
     id = Column(Integer, primary_key=True, autoincrement=True)
     follower_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    user_id = Column(Integer,ForeignKey('user.id'),nullable=False)
-    accepted = Column(Boolean, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    accepted = Column(Enum(AcceptanceStatus), nullable=False)
 
 class Post(Base):
     __tablename__='post'
