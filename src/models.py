@@ -19,10 +19,13 @@ class User(Base):
     profile_pic = Column(String(250), nullable=True)
     bio = Column(String(250), nullable=True)
     gender_id = Column(Integer, ForeignKey('gender.id'), nullable= True)
-    account_status = Column(Boolean, nullable= False)
+    is_public = Column(Boolean, nullable=False, default=True)
+    account_status =Column(Enum('activa', 'eliminada', 'suspendida', name='account_status'), nullable=False)
     link = Column(String(250), nullable=True)
     account_type = Column(Integer, ForeignKey('account_type.id'), nullable=False)
     avatar = Column(String(250), nullable=True)
+    created_at = Column(DateTime, nullable=False)
+    updated_at = Column(DateTime, nullable=False)
 
 class Gender(Base):
     __tablename__ = 'gender'
