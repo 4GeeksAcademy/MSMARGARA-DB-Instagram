@@ -34,17 +34,12 @@ class AccountType(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     
-class AcceptanceStatus(Enum):
-    ACEPTADO = "aceptado"
-    RECHAZADO = "rechazado"
-    PENDIENTE = "pendiente"
-
 class Followers(Base):
     __tablename__ = 'followers'
     id = Column(Integer, primary_key=True, autoincrement=True)
     follower_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
-    accepted = Column(Enum(AcceptanceStatus), nullable=False)
+    accepted = Column(Enum('aceptado','rechazado', 'pendiente', name='acceptance_status'), nullable=False)
 
 class Post(Base):
     __tablename__='post'
